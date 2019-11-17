@@ -1,7 +1,7 @@
 extends "res://objects/Basic.gd"
 
 
-func execute (userdata):
+func execute ():
 
 
 	pass
