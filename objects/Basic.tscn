@@ -30,12 +30,14 @@ cell_size = Vector2( 32, 32 )
 format = 1
 
 [node name="Flag" parent="." instance=ExtResource( 3 )]
-position = Vector2( 672, 280 )
+position = Vector2( 560.824, -62.2626 )
+
+[node name="Switches" type="Node2D" parent="."]
 
 [node name="Coins" type="Node2D" parent="."]
 
 [node name="Luigi" parent="." instance=ExtResource( 4 )]
-position = Vector2( 320, 304 )
+position = Vector2( 311.265, -43.4243 )
 
 [node name="Inform" type="Node2D" parent="."]
 visible = false

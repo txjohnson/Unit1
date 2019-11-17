@@ -13,6 +13,7 @@ var move_vecs  = [Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0)]
 var dir_base_offsets = [36, 24, 0, 12]
 
 var direction :int
+var going_to_face :int
 
 export var walk_distance :int = 32
 var to_go :int = 0
@@ -29,17 +30,33 @@ func _process(delta):
 	elif was_moving:
 		was_moving = false
 		face (direction)
+
+func position_on_left():
+	var left = direction - 1
+	if left < 0: left = 3
+	var vec = move_vecs [left]
+	return position + Vector2(vec.x * walk_distance, vec.y * walk_distance)
+	
+func position_on_right():
+	var right = direction + 1
+	if right > 3: right = 0
+	var vec = move_vecs [right]
+	return position + Vector2(vec.x * walk_distance, vec.y * walk_distance)
 	
 func next_forward_position ():
 	var vec = move_vecs [direction]
 	return position + Vector2(vec.x * walk_distance, vec.y * walk_distance)
 
 func face (adirection):
+	$Sprite/AnimationPlayer.stop()
+#	yield (get_tree().create_timer(0.5), "timeout")
 	var base = dir_base_offsets [adirection]
 	$Sprite.frame = base + 1
 	direction = adirection
-	$Sprite/AnimationPlayer.stop()
 	emit_signal("did_operation")
+
+#	going_to_face = adirection
+#	$Timer.start(0.5)
 		
 func face_north ():
 	face (Direction.North)
@@ -83,3 +100,10 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if was_jumping:
 		emit_signal("did_operation")
 		was_jumping = false
+
+
+func _on_Timer_timeout():
+	var base = dir_base_offsets [going_to_face]
+	$Sprite.frame = base + 1
+	direction = going_to_face
+	emit_signal("did_operation")
